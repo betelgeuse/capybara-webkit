@@ -102,6 +102,7 @@ void WebPageManager::setTimeout(int timeout) {
 void WebPageManager::reset() {
   m_timeout = -1;
   m_cookieJar->clearCookies();
+  m_pages.first()->resetLocalStorage();
   m_pages.first()->deleteLater();
   m_pages.clear();
   createPage(this)->setFocus();

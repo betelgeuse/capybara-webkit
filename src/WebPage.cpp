@@ -41,6 +41,10 @@ void WebPage::resetWindowSize() {
   this->settings()->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
 }
 
+void WebPage::resetLocalStorage() {
+  this->currentFrame()->evaluateJavaScript("localStorage.clear()");
+}
+
 void WebPage::setCustomNetworkAccessManager() {
   NetworkAccessManager *manager = new NetworkAccessManager(this);
   manager->setCookieJar(m_manager->cookieJar());
