@@ -113,6 +113,12 @@ void WebPageManager::reset() {
   m_pages.first()->resetLocalStorage();
   m_pages.first()->deleteLater();
   m_pages.clear();
+
+  qint64 size = QWebSettings::offlineWebApplicationCacheQuota();
+  // No public function was found to wrap the empty() call to
+  // WebCore::cacheStorage().empty()
+  QWebSettings::setOfflineWebApplicationCacheQuota(size);
+
   createPage(this)->setFocus();
 }
 
