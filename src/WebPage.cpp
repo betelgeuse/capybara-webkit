@@ -35,8 +35,11 @@ WebPage::WebPage(WebPageManager *manager, QObject *parent) : QWebPage(parent) {
   resetWindowSize();
 
   settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
-  settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-  settings()->setOfflineWebApplicationCachePath("tmp");
+
+  if(QFileInfo("tmp").isDir()) {
+    settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+    settings()->setOfflineWebApplicationCachePath("tmp");
+  }
 }
 
 void WebPage::resetWindowSize() {
