@@ -1612,10 +1612,10 @@ describe Capybara::Webkit::Driver do
 
     it "clears the message after a driver reset!" do
       visit "/"
-      driver.find_xpath("//span[contains(.,'localStorage is enabled')]").should_not be_empty
+      driver.find("//span[contains(.,'localStorage is enabled')]").should_not be_empty
       driver.reset!
       visit "/"
-      driver.find_xpath("//span[contains(.,'localStorage is enabled')]").should be_empty
+      driver.find("//span[contains(.,'localStorage is enabled')]").should be_empty
     end
   end
 
@@ -1671,10 +1671,10 @@ CACHE MANIFEST
     before { visit("/f8742c39-8bef-4196-b1c3-80f8a3d65f3e") }
 
     it "has proper state available" do
-      driver.find_xpath("//*[@id='state']").first.visible_text.should == '0'
+      driver.find("//*[@id='state']").first.visible_text.should == '0'
       sleep 1
       @visited.should eq(['complex', 'manifest', 'simple']), 'files were not downloaded in expected order'
-      driver.find_xpath("//*[@id='finished']").first.visible_text.should == 'cached'
+      driver.find("//*[@id='finished']").first.visible_text.should == 'cached'
     end
 
     it "is cleared on driver reset!" do
