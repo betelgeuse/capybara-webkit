@@ -136,10 +136,11 @@ bool WebPageManager::isLoading() const {
 }
 
 QDebug WebPageManager::logger() const {
-  if (m_loggingEnabled)
-    return qDebug();
-  else
+  if (m_loggingEnabled) {
+    return qCritical();
+  } else {
     return QDebug(m_ignoredOutput);
+  }
 }
 
 void WebPageManager::enableLogging() {

@@ -1,4 +1,5 @@
 #include "Server.h"
+#include "IgnoreDebugOutput.h"
 #include <QApplication>
 #include <iostream>
 #ifdef Q_OS_UNIX
@@ -18,6 +19,7 @@ int main(int argc, char **argv) {
   app.setOrganizationName("thoughtbot, inc");
   app.setOrganizationDomain("thoughtbot.com");
 
+  ignoreDebugOutput();
   Server server(0);
 
   if (server.start()) {
@@ -28,4 +30,3 @@ int main(int argc, char **argv) {
     return 1;
   }
 }
-
