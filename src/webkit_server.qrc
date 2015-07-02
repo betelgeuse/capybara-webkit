@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="/">
     <file>capybara.js</file>
+    <file>drag-mock/dist/drag-mock.js</file>
     <file>pointer.png</file>
   </qresource>
 </RCC>

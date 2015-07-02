@@ -1531,8 +1531,9 @@ describe Capybara::Webkit::Driver do
         </head>
         <body>
           <div id="change">Change me</div>
-          <div id="mouseup">Push me</div>
+          <div id="mouseup" draggable=true>Push me</div>
           <div id="mousedown">Release me</div>
+          <div id="drop" ondragover="event.preventDefault()">Drop Zone</div>
           <div id="hover">
             <span>This really long paragraph has a lot of text and will wrap. This sentence ensures that we have four lines of text.</span>
             <div class="hidden">Text that only shows on hover.</div>
@@ -1556,9 +1557,17 @@ describe Capybara::Webkit::Driver do
               addEventListener("mouseup", function () {
                 this.className = "triggered";
               });
+            document.getElementById("mouseup").
+              addEventListener("dragstart", function(event) {
+                event.dataTransfer.setData('text/plain', 'triggered');
+              });
             document.getElementById("mousedown").
               addEventListener("mousedown", function () {
                 this.className = "triggered";
+              });
+            document.getElementById("drop").
+              addEventListener("drop", function (event) {
+                this.className = event.dataTransfer.getData('text/plain');
               });
           </script>
           <a href="/next">Next</a>
@@ -1610,13 +1619,22 @@ describe Capybara::Webkit::Driver do
       driver.find_xpath("//select[@class='triggered']").should_not be_empty
     end
 
-    it "fires drag events" do
+    it "fires mouse events on drag" do
       draggable = driver.find_xpath("//*[@id='mousedown']").first
       container = driver.find_xpath("//*[@id='mouseup']").first
 
       draggable.drag_to(container)
 
-      driver.find_xpath("//*[@class='triggered']").size.should eq 1
+      driver.find_xpath("//*[@class='triggered' and @id='mousedown']").size.should eq 1
+    end
+
+    it "fires html4 dnd events on drag" do
+      draggable = driver.find_xpath("//*[@id='mouseup']").first
+      container = driver.find_xpath("//*[@id='drop']").first
+
+      draggable.drag_to(container)
+
+      driver.find_xpath("//*[@class='triggered' and @id='drop']").size.should eq 1
     end
   end
 

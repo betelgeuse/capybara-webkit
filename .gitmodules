@@ -1,0 +1,3 @@
+[submodule "src/drag-mock"]
+	path = src/drag-mock
+	url = git@github.com:betelgeuse/drag-mock.git

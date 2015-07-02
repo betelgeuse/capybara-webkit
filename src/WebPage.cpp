@@ -99,16 +99,22 @@ void WebPage::unsupportedContentFinishedReply(QNetworkReply *reply) {
   m_manager->replyFinished(reply);
 }
 
+
 void WebPage::loadJavascript() {
-  QResource javascript(":/capybara.js");
+  loadSingleJavascript(":/drag-mock/dist/drag-mock.js");
+  loadSingleJavascript(":/capybara.js");
+}
+
+void WebPage::loadSingleJavascript(const QString &path) {
+  QResource javascript(path);
   if (javascript.isCompressed()) {
     QByteArray uncompressedBytes(qUncompress(javascript.data(), javascript.size()));
-    m_capybaraJavascript = QString(uncompressedBytes);
+    m_capybaraJavascript.append(QString(uncompressedBytes));
   } else {
     char * javascriptString =  new char[javascript.size() + 1];
     strcpy(javascriptString, (const char *)javascript.data());
     javascriptString[javascript.size()] = 0;
-    m_capybaraJavascript = javascriptString;
+    m_capybaraJavascript.append(javascriptString);
   }
 }
 

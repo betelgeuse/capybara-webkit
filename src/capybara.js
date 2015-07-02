@@ -383,28 +383,12 @@ Capybara = {
 
   dragTo: function (index, targetIndex) {
     var element = this.getNode(index), target = this.getNode(targetIndex);
-    var position = this.centerPosition(element);
-    var options = {
-      clientX: position.x,
-      clientY: position.y
-    };
-    var mouseTrigger = function(eventName, options) {
-      var eventObject = document.createEvent("MouseEvents");
-      eventObject.initMouseEvent(eventName, true, true, window, 0, 0, 0, options.clientX || 0, options.clientY || 0, false, false, false, false, 0, null);
-      element.dispatchEvent(eventObject);
-    };
-    mouseTrigger('mousedown', options);
-    options.clientX += 1;
-    options.clientY += 1;
-    mouseTrigger('mousemove', options);
-
-    position = this.centerPosition(target);
-    options = {
-      clientX: position.x,
-      clientY: position.y
-    };
-    mouseTrigger('mousemove', options);
-    mouseTrigger('mouseup', options);
+    var source_position = this.centerPosition(element);
+    var target_position = this.centerPosition(target);
+    dragMock.
+      dragStart(element, { clientX: source_position.x, clientY: source_position.y }).
+      dragOver(element, { clientX: source_position.x + 1, clientY: source_position.y + 1}).
+      drop(target, { clientX: target_position.x, clientY: target_position.y });
   },
 
   equals: function(index, targetIndex) {
